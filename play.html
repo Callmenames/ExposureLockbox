@@ -99,26 +99,9 @@ button{
     border-radius:6px;
 }
 
-.green{
-    color:#2ecc71;
-}
-
-.yellow{
-    color:#f1c40f;
-}
-
-.gray{
-    color:#aaa;
-}
-
-#history{
-    margin-top:20px;
-}
-
-#wheelResult{
-    font-size:28px;
-    text-align:center;
-    margin-top:20px;
+.attempts{
+    margin-bottom:15px;
+    font-size:18px;
 }
 
 .gallery{
@@ -133,9 +116,9 @@ button{
     object-fit:cover;
 }
 
-.attempts{
-    margin-bottom:15px;
-    font-size:18px;
+#revealScreen img{
+    max-height:70vh;
+    object-fit:contain;
 }
 
 </style>
@@ -213,19 +196,19 @@ button{
 
 </div>
 
-<div id="wheelScreen" class="card hidden center">
+<div id="revealScreen" class="card hidden center">
 
-    <h2>Lock Solved</h2>
-
-    <p>Spin the wheel</p>
+    <h2>Stage Complete!</h2>
 
     <br>
 
-    <button class="primary" onclick="spinWheel()">
-        SPIN
-    </button>
+    <img id="revealedImage">
 
-    <div id="wheelResult"></div>
+    <br><br>
+
+    <button class="primary" onclick="nextStage()">
+        Continue
+    </button>
 
 </div>
 
