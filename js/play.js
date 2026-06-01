@@ -270,13 +270,9 @@ function submitGuess() {
     if (
         stage.remainingAttempts <= 0
     ) {
-
-        alert(
-            "No attempts remaining. Restarting puzzle."
-        );
-
-        resetPuzzle();
-
+    
+        failCurrentStage();
+    
     }
 
 }
@@ -467,6 +463,66 @@ function showVictory() {
             );
 
         }
+    );
+
+}
+
+function randomCode() {
+
+    let code = "";
+
+    for(let i = 0; i < 4; i++) {
+
+        code += Math.floor(
+            Math.random() * 10
+        );
+
+    }
+
+    return code;
+
+}
+
+function failCurrentStage() {
+
+    const stage =
+        gameData.stages[
+            currentStage - 1
+        ];
+
+    let newCode =
+        randomCode();
+
+    while (
+        newCode === stage.code
+    ) {
+
+        newCode =
+            randomCode();
+
+    }
+
+    stage.code =
+        newCode;
+
+    stage.remainingAttempts =
+        stage.attempts;
+
+    currentGuess = "";
+
+    document.getElementById(
+        "history"
+    ).innerHTML = "";
+
+    updateGuessDisplay();
+
+    document.getElementById(
+        "attempts"
+    ).textContent =
+        stage.remainingAttempts;
+
+    alert(
+        "Stage failed. A new code has been generated."
     );
 
 }
