@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mastermind Challenge</title>
+
+<style>
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    font-family:Arial,Helvetica,sans-serif;
+}
+
+body{
+    background:#111;
+    color:white;
+    min-height:100vh;
+    padding:20px;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+}
+
+.hidden{
+    display:none;
+}
+
+.card{
+    background:#1c1c1c;
+    border-radius:12px;
+    padding:20px;
+    margin-bottom:20px;
+}
+
+.center{
+    text-align:center;
+}
+
+img{
+    max-width:100%;
+    border-radius:10px;
+}
+
+.blurred{
+    filter:blur(40px);
+}
+
+button{
+    border:none;
+    padding:14px 20px;
+    border-radius:10px;
+    cursor:pointer;
+    font-size:16px;
+}
+
+.primary{
+    background:#00b894;
+    color:white;
+}
+
+.primary:hover{
+    background:#00a383;
+}
+
+.keypad{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:10px;
+    margin-top:20px;
+}
+
+.key{
+    background:#2d3436;
+    color:white;
+    font-size:22px;
+    padding:20px;
+}
+
+.key:hover{
+    background:#3b4345;
+}
+
+.display{
+    font-size:32px;
+    text-align:center;
+    margin:20px 0;
+    letter-spacing:8px;
+}
+
+.guess{
+    padding:10px;
+    margin:6px 0;
+    background:#222;
+    border-radius:6px;
+}
+
+.green{
+    color:#2ecc71;
+}
+
+.yellow{
+    color:#f1c40f;
+}
+
+.gray{
+    color:#aaa;
+}
+
+#history{
+    margin-top:20px;
+}
+
+#wheelResult{
+    font-size:28px;
+    text-align:center;
+    margin-top:20px;
+}
+
+.gallery{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+    gap:10px;
+    margin-top:20px;
+}
+
+.gallery img{
+    height:200px;
+    object-fit:cover;
+}
+
+.attempts{
+    margin-bottom:15px;
+    font-size:18px;
+}
+
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<div id="loading" class="card center">
+    Loading...
+</div>
+
+<div id="coverScreen" class="card hidden center">
+
+    <h1>Mastermind Challenge</h1>
+
+    <img id="coverImage">
+
+    <br><br>
+
+    <button class="primary" onclick="startGame()">
+        Start
+    </button>
+
+</div>
+
+<div id="gameScreen" class="hidden">
+
+    <div class="card">
+
+        <h2 id="stageTitle"></h2>
+
+        <div class="attempts">
+            Attempts Remaining:
+            <span id="attempts"></span>
+        </div>
+
+        <img id="stageImage" class="blurred">
+
+        <div id="mastermindArea">
+
+            <div id="currentGuess" class="display">
+                _ _ _ _
+            </div>
+
+            <button class="primary" onclick="submitGuess()">
+                Submit Guess
+            </button>
+
+            <div class="keypad">
+
+                <button class="key" onclick="pressDigit(1)">1</button>
+                <button class="key" onclick="pressDigit(2)">2</button>
+                <button class="key" onclick="pressDigit(3)">3</button>
+
+                <button class="key" onclick="pressDigit(4)">4</button>
+                <button class="key" onclick="pressDigit(5)">5</button>
+                <button class="key" onclick="pressDigit(6)">6</button>
+
+                <button class="key" onclick="pressDigit(7)">7</button>
+                <button class="key" onclick="pressDigit(8)">8</button>
+                <button class="key" onclick="pressDigit(9)">9</button>
+
+                <button class="key" onclick="backspace()">⌫</button>
+                <button class="key" onclick="pressDigit(0)">0</button>
+                <button class="key" onclick="clearGuess()">C</button>
+
+            </div>
+
+            <div id="history"></div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div id="wheelScreen" class="card hidden center">
+
+    <h2>Lock Solved</h2>
+
+    <p>Spin the wheel</p>
+
+    <br>
+
+    <button class="primary" onclick="spinWheel()">
+        SPIN
+    </button>
+
+    <div id="wheelResult"></div>
+
+</div>
+
+<div id="victoryScreen" class="card hidden center">
+
+    <h1>Congratulations!</h1>
+
+    <h3>Final Reward</h3>
+
+    <img id="finalImage">
+
+    <h2 style="margin-top:20px;">
+        Completed Gallery
+    </h2>
+
+    <div id="gallery" class="gallery"></div>
+
+</div>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lz-string/1.5.0/lz-string.min.js"></script>
+<script src="js/play.js"></script>
+
+</body>
+</html>
