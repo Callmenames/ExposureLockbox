@@ -5,15 +5,6 @@ let currentGuess = "";
 
 const STORAGE_KEY = "mastermind-progress";
 
-const wheelOutcomes = [
-    "UNLOCK",
-    "UNLOCK",
-    "SPIN AGAIN",
-    "SPIN AGAIN",
-    "SPIN AGAIN",
-    "FAIL"
-];
-
 document.addEventListener("DOMContentLoaded", init);
 
 function init() {
@@ -21,8 +12,10 @@ function init() {
     const hash = window.location.hash.replace("#", "");
 
     if (!hash) {
+
         document.getElementById("loading").innerHTML =
-            "<h2>No game data found.</h2>";
+            "<h2>No puzzle data found.</h2>";
+
         return;
     }
 
@@ -58,7 +51,10 @@ function loadProgress() {
             const progress =
                 JSON.parse(saved);
 
-            if (progress.hash === window.location.hash) {
+            if (
+                progress.hash ===
+                window.location.hash
+            ) {
 
                 currentStage =
                     progress.currentStage || 0;
@@ -73,9 +69,13 @@ function loadProgress() {
         .classList.add("hidden");
 
     if (currentStage === 0) {
+
         showCover();
+
     } else {
+
         loadStage();
+
     }
 
 }
@@ -118,8 +118,10 @@ function startGame() {
 function loadStage() {
 
     if (currentStage > 5) {
+
         showVictory();
         return;
+
     }
 
     currentGuess = "";
@@ -134,7 +136,7 @@ function loadStage() {
     document.getElementById("gameScreen")
         .classList.remove("hidden");
 
-    document.getElementById("wheelScreen")
+    document.getElementById("revealScreen")
         .classList.add("hidden");
 
     document.getElementById("stageTitle")
@@ -149,6 +151,7 @@ function loadStage() {
         document.getElementById("stageImage");
 
     img.src = stage.image;
+
     img.classList.add("blurred");
 
     document.getElementById("history")
@@ -160,23 +163,34 @@ function loadStage() {
 
 function updateGuessDisplay() {
 
-    let display = currentGuess
-        .split("")
-        .join(" ");
+    let display =
+        currentGuess
+            .split("")
+            .join(" ");
 
-    while (display.replace(/\s/g, "").length < 4) {
+    while (
+        display.replace(/\s/g, "")
+            .length < 4
+    ) {
+
         display += " _";
+
     }
 
-    document.getElementById("currentGuess")
-        .textContent = display.trim();
+    document.getElementById(
+        "currentGuess"
+    ).textContent =
+        display.trim();
 
 }
 
 function pressDigit(num) {
 
-    if (currentGuess.length >= 4)
+    if (
+        currentGuess.length >= 4
+    ) {
         return;
+    }
 
     currentGuess += num.toString();
 
@@ -203,13 +217,21 @@ function clearGuess() {
 
 function submitGuess() {
 
-    if (currentGuess.length !== 4) {
-        alert("Enter a 4 digit code.");
+    if (
+        currentGuess.length !== 4
+    ) {
+
+        alert(
+            "Enter a 4 digit code."
+        );
+
         return;
     }
 
     const stage =
-        gameData.stages[currentStage - 1];
+        gameData.stages[
+            currentStage - 1
+        ];
 
     const result =
         evaluateGuess(
@@ -217,18 +239,17 @@ function submitGuess() {
             stage.code
         );
 
-    addHistory(currentGuess, result);
+    addHistory(
+        currentGuess,
+        result
+    );
 
-    if (currentGuess === stage.code) {
+    if (
+        currentGuess ===
+        stage.code
+    ) {
 
-        document.getElementById("gameScreen")
-            .classList.add("hidden");
-
-        document.getElementById("wheelScreen")
-            .classList.remove("hidden");
-
-        document.getElementById("wheelResult")
-            .innerHTML = "";
+        showReveal();
 
         currentGuess = "";
 
@@ -237,15 +258,18 @@ function submitGuess() {
 
     stage.remainingAttempts--;
 
-    document.getElementById("attempts")
-        .textContent =
+    document.getElementById(
+        "attempts"
+    ).textContent =
         stage.remainingAttempts;
 
     currentGuess = "";
 
     updateGuessDisplay();
 
-    if (stage.remainingAttempts <= 0) {
+    if (
+        stage.remainingAttempts <= 0
+    ) {
 
         alert(
             "No attempts remaining. Restarting puzzle."
@@ -263,17 +287,23 @@ function evaluateGuess(
 ) {
 
     const result =
-        ["⬜", "⬜", "⬜", "⬜"];
+        ["⬜","⬜","⬜","⬜"];
 
     const answerUsed =
-        [false, false, false, false];
+        [false,false,false,false];
 
     const guessUsed =
-        [false, false, false, false];
+        [false,false,false,false];
 
-    for (let i = 0; i < 4; i++) {
+    for (
+        let i = 0;
+        i < 4;
+        i++
+    ) {
 
-        if (guess[i] === answer[i]) {
+        if (
+            guess[i] === answer[i]
+        ) {
 
             result[i] = "🟩";
 
@@ -284,17 +314,30 @@ function evaluateGuess(
 
     }
 
-    for (let i = 0; i < 4; i++) {
+    for (
+        let i = 0;
+        i < 4;
+        i++
+    ) {
 
-        if (guessUsed[i])
-            continue;
+        if (
+            guessUsed[i]
+        ) continue;
 
-        for (let j = 0; j < 4; j++) {
+        for (
+            let j = 0;
+            j < 4;
+            j++
+        ) {
 
-            if (answerUsed[j])
-                continue;
+            if (
+                answerUsed[j]
+            ) continue;
 
-            if (guess[i] === answer[j]) {
+            if (
+                guess[i] ===
+                answer[j]
+            ) {
 
                 result[i] = "🟨";
 
@@ -318,104 +361,47 @@ function addHistory(
 ) {
 
     const row =
-        document.createElement("div");
+        document.createElement(
+            "div"
+        );
 
-    row.className = "guess";
+    row.className =
+        "guess";
 
     row.textContent =
-        guess + "   " +
+        guess +
+        "   " +
         result.join(" ");
 
-    document.getElementById("history")
-        .prepend(row);
+    document.getElementById(
+        "history"
+    ).prepend(row);
 
 }
 
-function spinWheel() {
-
-    const outcome =
-        wheelOutcomes[
-            Math.floor(
-                Math.random() *
-                wheelOutcomes.length
-            )
-        ];
-
-    document.getElementById("wheelResult")
-        .innerHTML =
-        "<strong>" +
-        outcome +
-        "</strong>";
-
-    if (outcome === "SPIN AGAIN") {
-        return;
-    }
-
-    if (outcome === "FAIL") {
-
-        setTimeout(() => {
-
-            alert(
-                "Wheel failed. Re-solve the mastermind."
-            );
-
-            document.getElementById("wheelScreen")
-                .classList.add("hidden");
-
-            document.getElementById("gameScreen")
-                .classList.remove("hidden");
-
-        }, 1000);
-
-        return;
-    }
-
-    if (outcome === "UNLOCK") {
-
-        setTimeout(() => {
-
-            revealStage();
-
-        }, 1000);
-
-    }
-
-}
-
-function revealStage() {
-
-    const img =
-        document.getElementById("stageImage");
-
-    img.classList.remove("blurred");
+function showReveal() {
 
     const stage =
-        gameData.stages[currentStage - 1];
+        gameData.stages[
+            currentStage - 1
+        ];
 
-    document.getElementById("wheelScreen")
-        .innerHTML =
-        `
-        <h2>Unlocked!</h2>
+    document.getElementById(
+        "gameScreen"
+    ).classList.add(
+        "hidden"
+    );
 
-        <br>
+    document.getElementById(
+        "revealScreen"
+    ).classList.remove(
+        "hidden"
+    );
 
-        <img
-            src="${stage.image}"
-            style="
-                max-width:100%;
-                border-radius:10px;
-            "
-        >
-
-        <br><br>
-
-        <button
-            class="primary"
-            onclick="nextStage()"
-        >
-            Continue
-        </button>
-        `;
+    document.getElementById(
+        "revealedImage"
+    ).src =
+        stage.image;
 
 }
 
@@ -425,63 +411,71 @@ function nextStage() {
 
     saveProgress();
 
-    document.getElementById("wheelScreen")
-        .innerHTML =
-        `
-        <h2>Lock Solved</h2>
-        <p>Spin the wheel</p>
-        <br>
-        <button
-            class="primary"
-            onclick="spinWheel()"
-        >
-            SPIN
-        </button>
-        <div id="wheelResult"></div>
-        `;
-
     loadStage();
 
 }
 
 function showVictory() {
 
-    localStorage.removeItem(STORAGE_KEY);
+    localStorage.removeItem(
+        STORAGE_KEY
+    );
 
-    document.getElementById("gameScreen")
-        .classList.add("hidden");
+    document.getElementById(
+        "gameScreen"
+    ).classList.add(
+        "hidden"
+    );
 
-    document.getElementById("wheelScreen")
-        .classList.add("hidden");
+    document.getElementById(
+        "revealScreen"
+    ).classList.add(
+        "hidden"
+    );
 
-    document.getElementById("victoryScreen")
-        .classList.remove("hidden");
+    document.getElementById(
+        "victoryScreen"
+    ).classList.remove(
+        "hidden"
+    );
 
-    document.getElementById("finalImage")
-        .src =
+    document.getElementById(
+        "finalImage"
+    ).src =
         gameData.stages[4].image;
 
     const gallery =
-        document.getElementById("gallery");
+        document.getElementById(
+            "gallery"
+        );
 
     gallery.innerHTML = "";
 
-    gameData.stages.forEach(stage => {
+    gameData.stages.forEach(
+        stage => {
 
-        const img =
-            document.createElement("img");
+            const img =
+                document.createElement(
+                    "img"
+                );
 
-        img.src = stage.image;
+            img.src =
+                stage.image;
 
-        gallery.appendChild(img);
+            gallery.appendChild(
+                img
+            );
 
-    });
+        }
+    );
 
 }
 
 function resetPuzzle() {
 
-    localStorage.removeItem(STORAGE_KEY);
+    localStorage.removeItem(
+        STORAGE_KEY
+    );
 
     location.reload();
 
