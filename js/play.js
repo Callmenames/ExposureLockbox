@@ -447,23 +447,31 @@ function showVictory() {
 
     gallery.innerHTML = "";
 
-    gameData.stages.forEach(
-        stage => {
-
+        const images = [
+        
+            gameData.cover,
+        
+            gameData.stages[0].image,
+            gameData.stages[1].image,
+            gameData.stages[2].image,
+            gameData.stages[3].image
+        
+        ];
+        
+        images.forEach(src => {
+        
             const img =
                 document.createElement(
                     "img"
                 );
-
-            img.src =
-                stage.image;
-
+        
+            img.src = src;
+        
             gallery.appendChild(
                 img
             );
-
-        }
-    );
+        
+        });
 
 }
 
